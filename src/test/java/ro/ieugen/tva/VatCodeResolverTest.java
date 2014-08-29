@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 
-public class VatCodeListResolverTest extends CamelTestSupport {
+public class VatCodeResolverTest extends CamelTestSupport {
 
     @EndpointInject(uri = "{{vatcode.input}}")
     ProducerTemplate input;
@@ -31,14 +31,14 @@ public class VatCodeListResolverTest extends CamelTestSupport {
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
-        return new VatCodeListResolver();
+        return new VatCodeResolver();
     }
 
     @Test
     public void processingVatCodeListReturnsTheNumberOfCodesInTheList() throws Exception {
-        String resource = Resources.toString(Resources.getResource("vat_codes.txt"), StandardCharsets.UTF_8);
-        output.expectedMessageCount(3);
+        output.expectedMessageCount(1);
 
+        String resource = Resources.toString(Resources.getResource("vat_codes.csv"), StandardCharsets.UTF_8);
         input.send(createExchangeWithBody(resource));
 
         output.assertIsSatisfied();
