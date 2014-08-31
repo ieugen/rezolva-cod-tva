@@ -28,7 +28,7 @@ public class VatCodeValidator {
     }
 
     private String trimLeadingRo(String vatCode) {
-        String uppercased = vatCode.toUpperCase();
+        String uppercased = vatCode.trim().toUpperCase();
         if (uppercased.startsWith("RO")) {
             uppercased = uppercased.substring(2);
         }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="simplejob" version="1.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+     http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/jobXML_1_0.xsd">
+
+    <properties>
+        <property name="input_file" value="input.txt"/>
+        <property name="output_file" value="output.txt"/>
+    </properties>
+
+    <step id="batchlet">
+        <batchlet ref="ro.ieugen.tva.batch.FirstBatchlet"/>
+    </step>
+</job>
