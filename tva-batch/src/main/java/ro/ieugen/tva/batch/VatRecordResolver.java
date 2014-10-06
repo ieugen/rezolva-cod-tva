@@ -7,6 +7,7 @@ import ro.ieugen.tva.batch.csv.VatRecord;
 import javax.batch.api.chunk.ItemProcessor;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import javax.xml.ws.Endpoint;
 import javax.xml.ws.Holder;
 import javax.xml.ws.Service;
 import java.net.MalformedURLException;
@@ -30,7 +31,6 @@ public class VatRecordResolver implements ItemProcessor {
         QName qName = new QName("urn:ec.europa.eu:taxud:vies:services:checkVat", "checkVatPortType");
         Service service = Service.create(url, qName);
         CheckVatPortType servicePort = service.getPort(CheckVatPortType.class);
-
         Holder<Boolean> valid = new Holder<>();
         Holder<XMLGregorianCalendar> requestDate = new Holder<>();
         Holder<String> name = new Holder<>();
