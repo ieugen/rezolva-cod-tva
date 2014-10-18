@@ -37,7 +37,7 @@
                             <!-- OSGi framework type (equinox, felix, knopflerfish) -->
                             <framework>felix</framework>
                             <provision>
-                                <param>--noConsole</param>
+                                <!--<param>- -noConsole</param>-->
                                 <param>--executor=script</param>
                                 <param>--clean</param>
                                 <param>--log=debug</param>
