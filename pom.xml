@@ -20,6 +20,38 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.ops4j</groupId>
+                <artifactId>maven-pax-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>provision</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>provision</goal>
+                        </goals>
+                        <configuration>
+                            <runner>1.8.6</runner>
+                            <noDependencies>true</noDependencies>
+                            <!-- Pax Runner version -->
+                            <!-- OSGi framework type (equinox, felix, knopflerfish) -->
+                            <framework>felix</framework>
+                            <provision>
+                                <param>--noConsole</param>
+                                <param>--executor=script</param>
+                                <param>--clean</param>
+                                <param>--log=debug</param>
+                                <param>--workingDirectory=target/runner</param>
+                                <!-- bundles that should be installed -->
+                                <param>
+                                    scan-composite:mvn:${project.groupId}/${project.artifactId}/${project.version}/profile/heroku
+                                </param>
+                            </provision>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.8</version>
@@ -46,52 +78,17 @@
 
     <profiles>
         <profile>
-            <id>provision-application-on-heroku</id>
-
-            <properties>
-                <org.osgi.service.http.port>${env.PORT}</org.osgi.service.http.port>
-            </properties>
-
+            <id>heroku-active-profile</id>
             <activation>
                 <property>
                     <name>env.DYNO</name>
                 </property>
             </activation>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.ops4j</groupId>
-                        <artifactId>maven-pax-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <id>provision</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>provision</goal>
-                                </goals>
-                                <configuration>
-                                    <runner>1.8.6</runner>
-                                    <noDependencies>true</noDependencies>
-                                    <!-- Pax Runner version -->
-                                    <!-- OSGi framework type (equinox, felix, knopflerfish) -->
-                                    <framework>felix</framework>
-                                    <provision>
-                                        <param>--clean</param>
-                                        <param>--log=debug</param>
-                                        <param>--workingDirectory=target/runner</param>
-                                        <!-- bundles that should be installed -->
-                                        <param>
-                                            scan-composite:mvn:${project.groupId}/${project.artifactId}/${project.version}/profile/heroku
-                                        </param>
-                                    </provision>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <!--  some example OSGi runtime properties  -->
+                <!-- these will be passed as system properties in the generated script -->
+                <org.osgi.service.http.port>$PORT</org.osgi.service.http.port>
+            </properties>
         </profile>
     </profiles>
 

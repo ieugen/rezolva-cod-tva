@@ -1,1 +1,1 @@
-web: java -cp web/target/classes:web:target/dependency/* ro.ieugen.tva.web.Main
+web: sh target/runner/run.sh

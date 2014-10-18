@@ -34,13 +34,16 @@ scan-bundle:mvn:org.apache.felix/org.apache.felix.webconsole.plugins.ds/1.0.0
 scan-bundle:mvn:org.apache.felix/org.apache.felix.webconsole/4.2.2
 
 # this part is osgi-jax-rs-connector
-scan-features:mvn:com.eclipsesource.jaxrs/features/0.0.1-SNAPSHOT/xml/features!/jax-rs-connector,jax-rs-provider-moxy
+#scan-features:mvn:com.eclipsesource.jaxrs/features/0.0.1-SNAPSHOT/xml/features!/jax-rs-connector,jax-rs-provider-moxy
 
-# felix web-console
-# scan-bundle:mvn:org.apache.felix/org.apache.felix.webconsole/4.2.2
+# use bundles, because feature is not yet published
+scan-bundle:mvn:com.eclipsesource.jaxrs/jersey-all/2.10.1
+scan-bundle:mvn:com.eclipsesource.jaxrs/consumer/3.0-SR1
+scan-bundle:mvn:com.eclipsesource.jaxrs/publisher/4.1
 
-# this part is osgi-jax-rs-connector
-scan-features:mvn:com.eclipsesource.jaxrs/features/0.0.1-SNAPSHOT/xml/features!/jax-rs-connector,jax-rs-provider-moxy
+scan-bundle:mvn:org.eclipse.persistence/org.eclipse.persistence.core/2.5.2
+scan-bundle:mvn:org.eclipse.persistence/org.eclipse.persistence.moxy/2.5.2
+scan-bundle:mvn:com.eclipsesource.jaxrs/provider-moxy/2.0-SR1
 
 # our sample application
-scan-bundle:mvn:com.eclipsesource.jaxrs/jax-rs-sample/0.0.1-SNAPSHOT
+# scan-bundle:mvn:com.eclipsesource.jaxrs/jax-rs-sample/0.0.1-SNAPSHOT
