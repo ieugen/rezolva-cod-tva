@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 
-public class VatCodeResolverTest extends CamelTestSupport {
+public class VatCodeResolverLiveTest extends CamelTestSupport {
 
     @EndpointInject(uri = "{{vatcode.input}}")
     ProducerTemplate input;

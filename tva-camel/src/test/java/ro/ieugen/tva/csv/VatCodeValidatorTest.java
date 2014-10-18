@@ -24,12 +24,12 @@ public class VatCodeValidatorTest {
         Assert.assertEquals(result, "12345");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidVatCodeFormat.class)
     public void throwsIllegalArgumentExceptionIfLengthExceeedsMaxmum() throws Exception {
         sanitizer.validateAndClean("Ro12345678901");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidVatCodeFormat.class)
     public void throwsIllegalArgumentExceptionIfCodeContainsOtherCharactersBesidesNumbers() throws Exception {
         sanitizer.validateAndClean("RO1241x");
     }

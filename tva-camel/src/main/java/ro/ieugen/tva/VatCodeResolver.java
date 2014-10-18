@@ -8,6 +8,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+import ro.ieugen.tva.csv.InvalidVatCodeFormat;
 import ro.ieugen.tva.csv.VatCodeValidator;
 import ro.ieugen.tva.csv.VatRecord;
 
@@ -25,20 +26,29 @@ public class VatCodeResolver extends RouteBuilder {
 
         BindyCsvDataFormat csvDataFormat = new BindyCsvDataFormat(VatRecord.class);
 
+        onException(InvalidVatCodeFormat.class)
+                .handled(true)
+                .log("Exception validating VAT CODE ${in.headers.vatCode} - Ignored");
+
         from("{{vatcode.input}}")
                 .routeId("VatCodeProcessor")
                 .unmarshal(csvDataFormat)
                 .setHeader(Headers.LIST_SIZE, new CsvLineCount())
                 .split(simple("${in.body}"))
+                        // make requests for each vat code
                 .setHeader(Headers.VAT_CODE, new ValidaCodeFromVatRecord())
-                .process(new SoapRequestBuilder())
-                .log("Processing ${in.headers.vatCode}")
-                .to("{{vatcode.resolver}}")
-                .process(new UpdateVatRecord())
+                .to("direct:make-single-vat-request")
                 .aggregate(constant(true), new AggregateAsList())
                 .completionSize(header(Headers.LIST_SIZE))
                 .marshal(csvDataFormat)
                 .to("{{vatcode.output}}");
+
+        from("direct:make-single-vat-request")
+                .process(new SoapRequestBuilder())
+                .log("Processing ${in.headers.vatCode}")
+                .to("{{vatcode.resolver}}")
+                .process(new UpdateVatRecord());
+
     }
 
     public static class SoapRequestBuilder implements Processor {

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ro.ieugen.tva.rezolva-tva.build</groupId>
+  <artifactId>deployment</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <properties>
+    <glassfish.user>admin</glassfish.user>
+    <glassfish.domain.adminPort>10161</glassfish.domain.adminPort>
+    <test.cloudstack.provider.serviceOfferingId>799516ad-9756-4b51-9723-8a9884b16dbc</test.cloudstack.provider.serviceOfferingId>
+    <test.cloudstack.provider.accessKey>BiViqnLGvAW54fwYrrj_sBnYjGhckGSfYUrTUODtBTVI0wGGFg62crJfpsCoigcZsF_8S4_2j5B-ykyCcEpObw</test.cloudstack.provider.accessKey>
+    <test.cloudstack.provider.zoneId>f9a1d2eb-c49e-4b87-ac9b-9c47e2d912a3</test.cloudstack.provider.zoneId>
+    <glassfish.domain.host>localhost</glassfish.domain.host>
+    <test.cloudstack.provider.networkOfferingId>62d7d339-d37f-41c7-b4ed-6c62efc31b8d</test.cloudstack.provider.networkOfferingId>
+    <glassfish.domain.name>domain0</glassfish.domain.name>
+    <test.cloudstack.provider.secretKey>VuXrHKwOQVQiZ2_Kbr5YCzT5CLuozy76_np4trw0X_GFLJUv1xrQi3usOYXV1jqEhhFp_CNVBbtqlAmKWTVGvA</test.cloudstack.provider.secretKey>
+    <glassfish.adminPassword>adminadmin</glassfish.adminPassword>
+    <test.cloudstack.provider.endpoint>https://cloudplatform.cloudcentral.com.au/client/api</test.cloudstack.provider.endpoint>
+    <glassfish.glassfishDirectory>/home/ieugen/Programe/glassfish-4.0/glassfish</glassfish.glassfishDirectory>
+    <test.cloudstack.provider.templateId>4151c04f-97b3-4acc-af32-41bd9907b91c</test.cloudstack.provider.templateId>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>ro.ieugen.tva</groupId>
+      <artifactId>eu-vat</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>ro.ieugen.tva</groupId>
+      <artifactId>web-service</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <id>dropbox-repo</id>
+      <name>ieugen DropBox Repo</name>
+      <url>https://dl.dropboxusercontent.com/u/45734324/mvn-repository/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <id>jboss</id>
+      <name>JBoss</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/developer/</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <id>com.springsource.repository.bundles.release</id>
+      <name>SpringSource Enterprise Bundle Repository -
+                        SpringSource Bundle Releases</name>
+      <url>http://repository.springsource.com/maven/bundles/release</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>phloc.com</id>
+      <url>http://repo.phloc.com/maven2</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <id>com.springsource.repository.bundles.external</id>
+      <name>SpringSource Enterprise Bundle Repository -
+                        External Bundle Releases</name>
+      <url>http://repository.springsource.com/maven/bundles/external</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <id>com.springsource.repository.libraries.release</id>
+      <name>SpringSource Enterprise Bundle Repository -
+                        SpringSource Library Releases</name>
+      <url>http://repository.springsource.com/maven/libraries/release</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <id>com.springsource.repository.libraries.external</id>
+      <name>SpringSource Enterprise Bundle Repository -
+                        External Library Releases</name>
+      <url>http://repository.springsource.com/maven/libraries/external</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+</project>

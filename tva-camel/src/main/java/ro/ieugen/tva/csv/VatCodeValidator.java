@@ -23,7 +23,7 @@ public class VatCodeValidator {
 
     private void validateVatCodeLength(String vatCode) {
         if (vatCode.length() > 10) {
-            throw new IllegalArgumentException("VatCode exceeds maximum length 10");
+            throw new InvalidVatCodeFormat("VatCode exceeds maximum length 10");
         }
     }
 
@@ -38,7 +38,7 @@ public class VatCodeValidator {
     private void validateVatCodeHasOnlyNumbers(String vatCode) {
         for (char c : vatCode.toCharArray()) {
             if (c < '0' || c > '9')
-                throw new IllegalArgumentException("Vat code contains illegal characters " + c);
+                throw new InvalidVatCodeFormat("Vat code contains illegal characters " + c);
         }
     }
 }
