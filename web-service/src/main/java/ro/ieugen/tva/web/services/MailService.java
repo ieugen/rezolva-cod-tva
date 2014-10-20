@@ -22,7 +22,7 @@ public class MailService {
 
     private final Map<String, String> env;
     public static final String TVA_SMTP_HOST = "tva_smtp_host";
-    public static final String TVA_SMTP_USERNAME = "_username";
+    public static final String TVA_SMTP_USERNAME = "tva_smtp_username";
     public static final String TVA_SMTP_PASS = "tva_smtp_pass";
 
     public MailService(Map<String, String> env) {
@@ -36,7 +36,7 @@ public class MailService {
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(env.get("tva.smtp.username"), "Rezolva TVA"));
+            msg.setFrom(new InternetAddress(env.get(MailService.TVA_SMTP_USERNAME), "Rezolva TVA"));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(destination, destination));
             msg.setSubject("Companiile au fost verificate");
 
@@ -68,7 +68,7 @@ public class MailService {
 
         String smtpHost = env.get(TVA_SMTP_HOST);
 
-        log.info("Using mail config: {} ", smtpHost);
+        log.info("Using mail config: {} ", env);
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
