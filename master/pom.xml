@@ -13,13 +13,28 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <lombok.version>1.14.8</lombok.version>
+        <karaf.version>4.0.0.M1</karaf.version>
         <cxf.version>3.0.1</cxf.version>
+        <maven-bundle-plugin.version>2.5.0</maven-bundle-plugin.version>
+        <osgi.version>5.0.0</osgi.version>
+
+        <lombok.version>1.14.8</lombok.version>
+        <javaee-web-api.version>7.0</javaee-web-api.version>
+
+        <jax-rs-publisher.version>4.1</jax-rs-publisher.version>
+        <jax-rs-consumer.version>3.0-SR1</jax-rs-consumer.version>
+        <jax-rs-jersey-all.version>2.10.1</jax-rs-jersey-all.version>
+
+        <jax-rs-providers.version>2.0-SR1</jax-rs-providers.version>
+        <slf4j-api.version>1.7.7</slf4j-api.version>
+        <pax-web.version>4.0.0</pax-web.version>
+
         <slf4j.version>1.6.6</slf4j.version>
         <camel.version>2.14.0</camel.version>
         <junit.version>4.11</junit.version>
 
-        <org.osgi.compendium.version>4.3.1</org.osgi.compendium.version>
-        <org.osgi.core.version>4.3.1</org.osgi.core.version>
+        <osgi.version>5.0.0</osgi.version>
     </properties>
 
     <dependencyManagement>
@@ -79,7 +94,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.14.4</version>
+                <version>${lombok.version}</version>
             </dependency>
 
             <dependency>
@@ -99,38 +114,23 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>${org.osgi.core.version}</version>
+                <version>${osgi.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.compendium</artifactId>
-                <version>${org.osgi.compendium.version}</version>
-            </dependency>
-
-            <!-- CXF -->
-
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-                <version>${cxf.version}</version>
+                <version>${osgi.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-integration-cdi</artifactId>
-                <version>${cxf.version}</version>
+                <groupId>org.ops4j.pax.web</groupId>
+                <artifactId>pax-web-api</artifactId>
+                <version>${pax-web.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-xml-provider</artifactId>
-                <version>${cxf.version}</version>
+                <groupId>org.ops4j.pax.web</groupId>
+                <artifactId>pax-web-extender-whiteboard</artifactId>
+                <version>${pax-web.version}</version>
             </dependency>
 
             <!-- JBoss Weld -->
@@ -240,31 +240,28 @@
                         </excludes>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.karaf.tooling</groupId>
+                    <artifactId>karaf-maven-plugin</artifactId>
+                    <version>${karaf.version}</version>
+                    <extensions>true</extensions>
+                    <inherited>true</inherited>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven-bundle-plugin.version}</version>
+                    <inherited>true</inherited>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <instructions>
+                            <_dsannotations>*</_dsannotations>
+                            <_include>-osgi.bnd</_include>
+                        </instructions>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
 
 </project>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
+
+    <feature name="jax-rs-connector" version="${jax-rs-publisher.version}">
+        <bundle dependency="true">mvn:com.eclipsesource.jaxrs/jersey-all/${jax-rs-jersey-all.version}</bundle>
+        <bundle dependency="true">mvn:com.eclipsesource.jaxrs/consumer/${jax-rs-consumer.version}</bundle>
+        <bundle>mvn:com.eclipsesource.jaxrs/publisher/${jax-rs-publisher.version}</bundle>
+    </feature>
+
+    <feature name="jax-rs-provider-moxy" version="${jax-rs-providers.version}">
+        <bundle dependency="true">mvn:org.eclipse.persistence/org.eclipse.persistence.core/2.5.2</bundle>
+        <bundle dependency="true">mvn:org.eclipse.persistence/org.eclipse.persistence.moxy/2.5.2</bundle>
+        <bundle>mvn:com.eclipsesource.jaxrs/provider-moxy/${jax-rs-providers.version}</bundle>
+    </feature>
+
+    <feature name="jax-rs-provider-gson" version="${jax-rs-providers.version}">
+        <bundle dependency="true">mvn:com.google.code.gson/gson/2.3</bundle>
+        <bundle>mvn:com.eclipsesource.jaxrs/provider-gson/${jax-rs-providers.version}</bundle>
+    </feature>
+
+    <feature name="jax-rs-provider-multipart" version="${jax-rs-providers.version}">
+        <bundle>mvn:com.eclipsesource.jaxrs/provider-multipart/${jax-rs-providers.version}</bundle>
+    </feature>
+
+    <feature name="jax-rs-provider-security" version="${jax-rs-providers.version}">
+        <bundle>mvn:com.eclipsesource.jaxrs/provider-security/${jax-rs-providers.version}</bundle>
+    </feature>
+
+    <feature name="jax-rs-provider-sse" version="${jax-rs-providers.version}">
+        <bundle>mvn:com.eclipsesource.jaxrs/provider-sse/${jax-rs-providers.version}</bundle>
+    </feature>
+
+    <feature name="http" description="Implementation of the OSGI HTTP Service" version="4.0.99">
+        <feature version="4.0.99">pax-http</feature>
+        <bundle start-level="30">mvn:org.apache.karaf.http/org.apache.karaf.http.core/4.0.0.M1</bundle>
+    </feature>
+
+    <feature name="pax-http" version="4.0.99" description="Implementation of the OSGI HTTP Service">
+        <details>Allows to publish servlets using pax web and jetty</details>
+        <configfile finalname="/etc/jetty.xml">mvn:org.ops4j.pax.web/pax-web-features/4.0.0/xml/jettyconfig</configfile>
+        <config name="org.ops4j.pax.web">
+            javax.servlet.context.tempdir=${karaf.data}/pax-web-jsp
+            org.ops4j.pax.web.config.file=${karaf.base}/etc/jetty.xml
+        </config>
+        <feature version="[7.0,10.0)">pax-jetty</feature>
+
+        <bundle dependency="true" start-level="20">mvn:org.ow2.asm/asm-all/5.0.2</bundle>
+        <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-bundleutils/3.18</bundle>
+        <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-reflect/3.18</bundle>
+        <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-finder/3.18</bundle>
+
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-api/4.0.0</bundle>
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-spi/4.0.0</bundle>
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-runtime/4.0.0</bundle>
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-jetty/4.0.0</bundle>
+    </feature>
+
+    <feature name="webconsole" description="Base support of the Karaf WebConsole" version="4.0.99">
+        <config name="org.apache.karaf.webconsole" append="false">
+            realm=karaf
+        </config>
+        <feature version="4.0.99">http</feature>
+        <feature prerequisite="false" dependency="false">aries-blueprint</feature>
+        <bundle start-level="30">mvn:org.apache.felix/org.apache.felix.metatype/1.0.10</bundle>
+        <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.console/4.0.0.M1</bundle>
+        <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.features/4.0.0.M1</bundle>
+        <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.gogo/4.0.0.M1</bundle>
+        <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.http/4.0.0.M1</bundle>
+        <conditional>
+            <condition>eventadmin</condition>
+            <bundle start-level="30">mvn:org.apache.felix/org.apache.felix.webconsole.plugins.event/1.1.0</bundle>
+        </conditional>
+        <conditional>
+            <condition>scr</condition>
+            <bundle start-level="30">mvn:org.apache.felix/org.apache.felix.webconsole.plugins.ds/1.0.0</bundle>
+        </conditional>
+        <conditional>
+            <condition>instance</condition>
+            <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.instance/4.0.0.M1
+            </bundle>
+        </conditional>
+    </feature>
+
+    <feature name="pax-http-whiteboard" description="Provide HTTP Whiteboard pattern support" version="4.0.99">
+        <feature version="4.0.99">pax-http</feature>
+        <bundle dependency="true" start-level="30">mvn:org.eclipse.jdt.core.compiler/ecj/4.4</bundle>
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-jsp/4.0.0</bundle>
+        <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-extender-whiteboard/4.0.0</bundle>
+    </feature>
+
+    <feature name='jax-rs-sample' version='${project.version}' start-level="50">
+        <feature version="4.0.99">pax-http</feature>
+        <feature version="4.0.99">http</feature>
+        <feature version="4.0.99">webconsole</feature>
+        <feature version="4.0.99">pax-http-whiteboard</feature>
+        <feature>scr</feature>
+
+        <feature>jax-rs-connector</feature>
+        <feature>jax-rs-provider-moxy</feature>
+
+        <bundle>mvn:ro.ieugen.tva/web-service/${project.version}</bundle>
+        <bundle>mvn:ro.ieugen.tva/web-app/${project.version}</bundle>
+    </feature>
+
+</features>

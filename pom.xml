@@ -10,86 +10,14 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>master</module>
         <module>eu-vat</module>
         <!--<module>tva-camel</module>-->
         <!--<module>tva-batch</module>-->
         <module>web-service</module>
-        <module>master</module>
+        <module>web-app</module>
+        <module>features</module>
+        <module>distribution</module>
     </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.ops4j</groupId>
-                <artifactId>maven-pax-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>provision</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>provision</goal>
-                        </goals>
-                        <configuration>
-                            <runner>1.8.6</runner>
-                            <noDependencies>true</noDependencies>
-                            <!-- Pax Runner version -->
-                            <!-- OSGi framework type (equinox, felix, knopflerfish) -->
-                            <framework>felix</framework>
-                            <provision>
-                                <!--<param>- -noConsole</param>-->
-                                <param>--executor=script</param>
-                                <param>--clean</param>
-                                <param>--log=debug</param>
-                                <param>--workingDirectory=target/runner</param>
-                                <!-- bundles that should be installed -->
-                                <param>
-                                    scan-composite:mvn:${project.groupId}/${project.artifactId}/${project.version}/profile/heroku
-                                </param>
-                            </provision>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>attach-heroku-profile</id>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.basedir}/src/main/deploy/heroku.profile</file>
-                                    <type>profile</type>
-                                    <classifier>heroku</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>heroku-active-profile</id>
-            <activation>
-                <property>
-                    <name>env.DYNO</name>
-                </property>
-            </activation>
-            <properties>
-                <!--  some example OSGi runtime properties  -->
-                <!-- these will be passed as system properties in the generated script -->
-                <org.osgi.service.http.port>$PORT</org.osgi.service.http.port>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dfelix.config.properties=file:config.ini -Dorg.osgi.service.http.port="${PORT}" -Dorg.ops4j.pax.logging.DefaultServiceLog.level=DEBUG -Dgosh.args=--nointeractive -cp target/runner/bundles/org.apache.felix.main_4.4.1.jar org.apache.felix.main.Main
+web: KARAF_OPTS="-Dorg.osgi.service.http.port=$PORT" sh distribution/target/assembly/bin/karaf
