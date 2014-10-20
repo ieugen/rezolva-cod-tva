@@ -39,7 +39,6 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="./">Default</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
                 </ul>
             </div>
@@ -62,24 +61,32 @@
     <!-- User form  -->
     <div class="row">
         <div class="col-md-6">
-            <form>
+            <form id="tvaForm" action="services/vat" method="POST">
                 <div class="form-group">
-                    <label for="userEmail">Email</label>
+                    <label for="userEmail">Email pentru răspuns</label>
                     <input type="email" class="form-control" placeholder="Email" id="userEmail">
                 </div>
-                <div class="form-group">
-                    <label for="fileUplad">Upload CSV file</label>
-                    <input type="file" class="form-control" placeholder="Fisier CSV cu lista de companii"
-                           id="fileUplad">
-                </div>
+                <!--<div class="form-group">-->
+                <!--<label for="fileUplad">Upload CSV file</label>-->
+                <!--<input type="file" class="form-control" placeholder="Fisier CSV cu lista de companii"-->
+                <!--id="fileUplad">-->
+                <!--</div>-->
 
                 <div class="form-group">
-                    <label for="companyList">List</label>
-                    <input type="text" class="form-control" placeholder="List of companies" id="companyList">
+                    <label for="companyList">Listă de nume companii și codul fiscal, una pe linie</label>
+                    <textarea class="form-control span6" rows="5" placeholder="Papadia SRL; ROXXAABB11"
+                              id="companyList"> </textarea>
                 </div>
 
-                <button type="submit" class="btn btn-default">Trimite</button>
+                <button type="submit" class="btn btn-default">Procesează și revino cu email</button>
             </form>
+        </div>
+        <div class="col-md-6">
+            <p class="lead">
+                Această aplicație primește o listă de firme și coduri fiscale atașate și o adresă de email.
+                Veți primi pe email un răspuns cu lista similară și un atribut care indică pentru fiecare companie în
+                parte dacă este plătitoare sau nu de TVA.
+            </p>
         </div>
     </div>
 

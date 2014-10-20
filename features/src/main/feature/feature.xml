@@ -100,6 +100,9 @@
 
         <bundle>mvn:ro.ieugen.tva/web-service/${project.version}</bundle>
         <bundle>mvn:ro.ieugen.tva/web-app/${project.version}</bundle>
+
+        <bundle dependency="true">mvn:javax.mail/javax.mail-api/${javax.mail.version}</bundle>
+        <bundle dependency="true">mvn:com.sun.mail/javax.mail/${javax.mail.version}</bundle>
     </feature>
 
 </features>

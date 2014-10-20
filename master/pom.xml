@@ -35,6 +35,8 @@
         <junit.version>4.11</junit.version>
 
         <osgi.version>5.0.0</osgi.version>
+        <javax.mail.version>1.5.1</javax.mail.version>
+        <eclipse.persistence.version>2.5.2</eclipse.persistence.version>
     </properties>
 
     <dependencyManagement>
@@ -108,6 +110,16 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-web-api</artifactId>
                 <version>7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${javax.mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
             </dependency>
 
             <!-- OSGi APIs -->
