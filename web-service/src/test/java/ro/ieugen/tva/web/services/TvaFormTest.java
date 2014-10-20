@@ -35,7 +35,6 @@ public class TvaFormTest extends JerseyTest {
     @Override
     protected void configureClient(ClientConfig config) {
         config.register(MoxyJsonFeature.class);
-//        super.configureClient(config);
     }
 
     @Test
@@ -44,7 +43,7 @@ public class TvaFormTest extends JerseyTest {
         vatForm.add("email", "stan.ieugen@gmail.com");
         vatForm.add("companyList", "aaaalaaallala");
 
-        List<CompanyRecord> resonse = target("vat").request()
+        List<CompanyRecord> resonse = target("vat/resolve").request()
                 .post(Entity.form(vatForm), new GenericType<List<CompanyRecord>>() {
                 });
 

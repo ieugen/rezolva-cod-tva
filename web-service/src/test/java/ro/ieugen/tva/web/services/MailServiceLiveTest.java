@@ -16,9 +16,9 @@ public class MailServiceLiveTest {
 
     public static Map<String, String> createFaceEnv() {
         Map<String, String> config = new HashMap<>();
-        config.put("tva.smtp.host", "smtp.zoho.com");
-        config.put("tva.smtp.username", "heroku.bot@ieugen.ro");
-        config.put("tva.smtp.pass", " replace with valid password");
+        config.put(MailService.TVA_SMTP_HOST, "smtp.zoho.com");
+        config.put(MailService.TVA_SMTP_USERNAME, "heroku.bot@ieugen.ro");
+        config.put(MailService.TVA_SMTP_PASS, " replace with valid password");
 
         return config;
     }

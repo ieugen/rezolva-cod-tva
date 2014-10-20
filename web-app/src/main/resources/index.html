@@ -61,10 +61,10 @@
     <!-- User form  -->
     <div class="row">
         <div class="col-md-6">
-            <form id="tvaForm" action="services/vat" method="POST">
+            <form id="tvaForm" action="services/vat/resolve" method="post">
                 <div class="form-group">
                     <label for="userEmail">Email pentru răspuns</label>
-                    <input type="email" class="form-control" placeholder="Email" id="userEmail">
+                    <input type="email" name="email" class="form-control" placeholder="Email" id="userEmail">
                 </div>
                 <!--<div class="form-group">-->
                 <!--<label for="fileUplad">Upload CSV file</label>-->
@@ -75,10 +75,10 @@
                 <div class="form-group">
                     <label for="companyList">Listă de nume companii și codul fiscal, una pe linie</label>
                     <textarea class="form-control span6" rows="5" placeholder="Papadia SRL; ROXXAABB11"
-                              id="companyList"> </textarea>
+                              id="companyList" name="companyList"> </textarea>
                 </div>
 
-                <button type="submit" class="btn btn-default">Procesează și revino cu email</button>
+                <button type="submit" class="btn btn-default" name="submit">Procesează și revino cu email</button>
             </form>
         </div>
         <div class="col-md-6">

@@ -21,6 +21,9 @@ import java.util.Properties;
 public class MailService {
 
     private final Map<String, String> env;
+    public static final String TVA_SMTP_HOST = "tva_smtp_host";
+    public static final String TVA_SMTP_USERNAME = "_username";
+    public static final String TVA_SMTP_PASS = "tva_smtp_pass";
 
     public MailService(Map<String, String> env) {
         this.env = env;
@@ -49,8 +52,8 @@ public class MailService {
 
     private Session createSessionWithAuthentication() {
 
-        final String smtpUserName = env.get("tva.smtp.username");
-        final String smtpPassword = env.get("tva.smtp.pass");
+        final String smtpUserName = env.get(TVA_SMTP_USERNAME);
+        final String smtpPassword = env.get(TVA_SMTP_PASS);
 
         return Session.getDefaultInstance(configureMailTransport(), new Authenticator() {
             @Override
@@ -63,7 +66,7 @@ public class MailService {
     private Properties configureMailTransport() {
         Properties props = new Properties();
 
-        String smtpHost = env.get("tva.smtp.host");
+        String smtpHost = env.get(TVA_SMTP_HOST);
 
         log.info("Using mail config: {} ", smtpHost);
         props.put("mail.transport.protocol", "smtp");

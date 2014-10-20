@@ -12,6 +12,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,16 +40,18 @@ public class TvaForm {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/resolve")
     public Response processVatCodeRequest(@FormParam("email") String email,
-                                          @FormParam("companyList") String companyList) {
+                                          @FormParam("companyList") String companyList) throws IOException {
+
+        log.debug("Available configuration: {}", config);
         log.info("Request for email {} received and awaits processing.", email);
 
         List<CompanyRecord> records = fetchCompanyVatInformation();
-
-        mailService.sendEmail(email, records);
-
         GenericEntity<List<CompanyRecord>> genericEntity = new GenericEntity<List<CompanyRecord>>(records) {
         };
+        mailService.sendEmail(email, records);
+
         return Response.ok(genericEntity).build();
     }
 
@@ -55,6 +61,18 @@ public class TvaForm {
         records.add(new CompanyRecord("B SRL", "RO112244", "false"));
         records.add(new CompanyRecord("C SRL", "RO112255", "true"));
         return records;
+    }
+
+    public static String readInputStreamAsString(InputStream in) throws IOException {
+        BufferedInputStream bis = new BufferedInputStream(in);
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        int result = bis.read();
+        while (result != -1) {
+            byte b = (byte) result;
+            buf.write(b);
+            result = bis.read();
+        }
+        return buf.toString();
     }
 
 }
