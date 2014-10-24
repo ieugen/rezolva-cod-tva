@@ -84,28 +84,23 @@ public class VatCodeResolver extends RouteBuilder {
         public void process(Exchange exchange) throws Exception {
             VatRecord record = exchange.getIn().getBody(VatRecord.class);
 
-            URL url = new URL("http://ec.europa.eu/taxation_customs/vies/services/checkVatService");
-            QName qName = new QName("urn:ec.europa.eu:taxud:vies:services:checkVat", "checkVatService");
-            // save and replace current JAX WS provider
-//            String existingSpi = System.getProperty("javax.xml.ws.spi.Provider");
-//            System.setProperty("javax.xml.ws.spi.Provider", "com.sun.xml.internal.ws.spi.ProviderImpl");
-
-            Service service = Service.create(url, qName);
-            CheckVatPortType servicePort = service.getPort(CheckVatPortType.class);
-
-            Holder<Boolean> valid = new Holder<>();
-            Holder<XMLGregorianCalendar> requestDate = new Holder<>();
-            Holder<String> name = new Holder<>();
-            Holder<String> address = new Holder<>();
-
-            servicePort.checkVat(new Holder<>("RO"), new Holder<>(record.getVatCode()), requestDate, valid, name, address);
-            // restore JAX WS Provider
-//            System.setProperty("javax.xml.ws.spi.Provider", existingSpi);
-
-            record.setRequestDate(requestDate.value.toGregorianCalendar().getTime());
-            record.setValid(valid.value.toString());
-            record.setName(name.value);
-            record.setAddress(address.value);
+//            URL url = new URL("http://ec.europa.eu/taxation_customs/vies/services/checkVatService");
+//            QName qName = new QName("urn:ec.europa.eu:taxud:vies:services:checkVat", "checkVatService");
+//
+//            Service service = Service.create(url, qName);
+//            CheckVatPortType servicePort = service.getPort(CheckVatPortType.class);
+//
+//            Holder<Boolean> valid = new Holder<>();
+//            Holder<XMLGregorianCalendar> requestDate = new Holder<>();
+//            Holder<String> name = new Holder<>();
+//            Holder<String> address = new Holder<>();
+//
+//            servicePort.checkVat(new Holder<>("RO"), new Holder<>(record.getVatCode()), requestDate, valid, name, address);
+//
+//            record.setRequestDate(requestDate.value.toGregorianCalendar().getTime());
+//            record.setValid(valid.value.toString());
+//            record.setName(name.value);
+//            record.setAddress(address.value);
 
             exchange.getIn().setBody(record);
         }

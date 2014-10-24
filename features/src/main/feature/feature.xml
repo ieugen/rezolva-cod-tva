@@ -115,8 +115,6 @@
 
         <bundle dependency="true">mvn:javax.mail/javax.mail-api/${javax.mail.version}</bundle>
         <bundle dependency="true">mvn:com.sun.mail/javax.mail/${javax.mail.version}</bundle>
-
-        <feature>cxf-jaxws</feature>
     </feature>
 
 </features>
