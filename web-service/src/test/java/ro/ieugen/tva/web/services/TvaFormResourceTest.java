@@ -5,21 +5,19 @@ import org.glassfish.jersey.moxy.json.MoxyJsonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
-import org.junit.Assert;
 import org.junit.Test;
-import ro.ieugen.tva.web.model.CompanyRecord;
+import ro.ieugen.tva.api.VatCodeService;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import java.util.List;
 
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.mock;
 
-public class TvaFormTest extends JerseyTest {
+public class TvaFormResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
@@ -27,7 +25,10 @@ public class TvaFormTest extends JerseyTest {
         enable(TestProperties.DUMP_ENTITY);
 
         ResourceConfig config = new ResourceConfig();
-        config.registerInstances(new TvaForm(MailServiceLiveTest.createFaceEnv(), mock(MailService.class)));
+        TvaFormResource formResource = new TvaFormResource();
+        formResource.bind(mock(VatCodeService.class));
+
+        config.registerInstances(formResource);
         config.register(MoxyJsonFeature.class);
         return config;
     }
@@ -43,10 +44,8 @@ public class TvaFormTest extends JerseyTest {
         vatForm.add("email", "stan.ieugen@gmail.com");
         vatForm.add("companyList", "aaaalaaallala");
 
-        List<CompanyRecord> resonse = target("vat/resolve").request()
-                .post(Entity.form(vatForm), new GenericType<List<CompanyRecord>>() {
-                });
+        String resonse = target("vat/resolve").request().post(Entity.form(vatForm), String.class);
 
-        Assert.assertThat(resonse.size(), is(3));
+        assertThat(resonse, containsString("Request sent to process"));
     }
 }

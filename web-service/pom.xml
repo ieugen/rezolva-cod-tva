@@ -13,6 +13,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web-service</artifactId>
+    <name>Rezolva TVA :: Web-service</name>
+
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -20,20 +22,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ro.ieugen.tva</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>javax.mail-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>

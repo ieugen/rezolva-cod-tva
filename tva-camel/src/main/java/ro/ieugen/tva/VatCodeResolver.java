@@ -1,25 +1,54 @@
 package ro.ieugen.tva;
 
+import eu.europa.ec.taxud.vies.services.checkvat.CheckVatPortType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Expression;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.cxf.common.message.CxfConstants;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import ro.ieugen.tva.api.Headers;
 import ro.ieugen.tva.csv.InvalidVatCodeFormat;
-import ro.ieugen.tva.csv.VatCodeValidator;
 import ro.ieugen.tva.csv.VatRecord;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
+import javax.xml.ws.Service;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
+@Component(immediate = true)
 public class VatCodeResolver extends RouteBuilder {
+
+    private CamelContext camelContext;
+
+    @Reference
+    void bind(CamelContext camelContext) {
+        this.camelContext = camelContext;
+    }
+
+    @Activate
+    void activate() throws Exception {
+        camelContext.addRoutes(this);
+    }
+
+    @Deactivate
+    void deactivate() throws Exception {
+        for (RouteDefinition def : this.getRouteCollection().getRoutes()) {
+            log.info("Removing route {}", def.getId());
+            camelContext.removeRoute(def.getId());
+        }
+    }
 
     @Override
     public void configure() throws Exception {
@@ -31,12 +60,11 @@ public class VatCodeResolver extends RouteBuilder {
                 .log("Exception validating VAT CODE ${in.headers.vatCode} - Ignored");
 
         from("{{vatcode.input}}")
-                .routeId("VatCodeProcessor")
+                .routeId("VatCode_processing_route")
                 .unmarshal(csvDataFormat)
                 .setHeader(Headers.LIST_SIZE, new CsvLineCount())
                 .split(simple("${in.body}"))
                         // make requests for each vat code
-                .setHeader(Headers.VAT_CODE, new ValidaCodeFromVatRecord())
                 .to("direct:make-single-vat-request")
                 .aggregate(constant(true), new AggregateAsList())
                 .completionSize(header(Headers.LIST_SIZE))
@@ -44,86 +72,46 @@ public class VatCodeResolver extends RouteBuilder {
                 .to("{{vatcode.output}}");
 
         from("direct:make-single-vat-request")
-                .process(new SoapRequestBuilder())
-                .log("Processing ${in.headers.vatCode}")
-                .to("{{vatcode.resolver}}")
-                .process(new UpdateVatRecord());
+                .routeId("Soap_request_route")
+                .process(new VatCodeSoapRequest())
+                .log("Processing ${in.headers.vatCode}");
 
     }
 
-    public static class SoapRequestBuilder implements Processor {
+    public static class VatCodeSoapRequest implements Processor {
 
         @Override
         public void process(Exchange exchange) throws Exception {
-            String vatCode = exchange.getIn().getHeader(Headers.VAT_CODE, String.class);
-
-            List<Object> params = new ArrayList<>();
-
-            params.add("RO");
-            params.add(vatCode);
-            params.add(new Holder<Date>());
-            params.add(new Holder<Boolean>());
-            params.add(new Holder<String>());
-            params.add(new Holder<String>());
-
-            exchange.getIn().setHeader(CxfConstants.OPERATION_NAME, "checkVat");
-            exchange.getIn().setBody(params);
-        }
-    }
-
-    private static class ValidaCodeFromVatRecord implements Expression {
-
-        private static final VatCodeValidator validator = new VatCodeValidator();
-
-        @Override
-        public <T> T evaluate(Exchange exchange, Class<T> type) {
             VatRecord record = exchange.getIn().getBody(VatRecord.class);
-            // save the record
-            exchange.getIn().setHeader(Headers.VAT_RECORD, record);
 
-            return type.cast(validator.validateAndClean(record.getVatCode()));
-        }
-    }
+            URL url = new URL("http://ec.europa.eu/taxation_customs/vies/services/checkVatService");
+            QName qName = new QName("urn:ec.europa.eu:taxud:vies:services:checkVat", "checkVatService");
+            // save and replace current JAX WS provider
+//            String existingSpi = System.getProperty("javax.xml.ws.spi.Provider");
+//            System.setProperty("javax.xml.ws.spi.Provider", "com.sun.xml.internal.ws.spi.ProviderImpl");
 
-    private class UpdateVatRecord implements Processor {
+            Service service = Service.create(url, qName);
+            CheckVatPortType servicePort = service.getPort(CheckVatPortType.class);
 
-        @Override
-        public void process(Exchange exchange) throws Exception {
-            VatRecord record = exchange.getIn().getHeader(Headers.VAT_RECORD, VatRecord.class);
+            Holder<Boolean> valid = new Holder<>();
+            Holder<XMLGregorianCalendar> requestDate = new Holder<>();
+            Holder<String> name = new Holder<>();
+            Holder<String> address = new Holder<>();
 
-            List<Object> params = exchange.getIn().getBody(List.class);
-            record.setRequestDate(getRequestDate(params));
-            record.setValid(getValid(params));
-            record.setName(getName(params));
-            record.setAddress(getAddress(params));
+            servicePort.checkVat(new Holder<>("RO"), new Holder<>(record.getVatCode()), requestDate, valid, name, address);
+            // restore JAX WS Provider
+//            System.setProperty("javax.xml.ws.spi.Provider", existingSpi);
+
+            record.setRequestDate(requestDate.value.toGregorianCalendar().getTime());
+            record.setValid(valid.value.toString());
+            record.setName(name.value);
+            record.setAddress(address.value);
+
             exchange.getIn().setBody(record);
         }
-
-        private Date getRequestDate(List<Object> params) {
-            Holder<XMLGregorianCalendar> date = (Holder<XMLGregorianCalendar>) params.get(3);
-            return date.value.toGregorianCalendar().getTime();
-        }
-
-        private String getAddress(List<Object> params) {
-            Holder<String> address = (Holder<String>) params.get(6);
-            return address.value;
-        }
-
-        private String getName(List<Object> params) {
-            Holder<String> name = (Holder<String>) params.get(5);
-            return name.value;
-        }
-
-        private String getValid(List<Object> params) {
-            Holder<Boolean> valid = (Holder<Boolean>) params.get(4);
-            return valid.value.toString();
-        }
-
-
     }
 
     private class AggregateAsList implements AggregationStrategy {
-
 
         @Override
         public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {

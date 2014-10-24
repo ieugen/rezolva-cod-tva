@@ -1,4 +1,4 @@
-package ro.ieugen.tva.web.model;
+package ro.ieugen.tva.api.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

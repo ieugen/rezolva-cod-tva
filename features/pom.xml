@@ -10,11 +10,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>features</artifactId>
+    <groupId>ro.ieugen.tva.karaf</groupId>
+    <artifactId>rezolva-tva</artifactId>
     <packaging>feature</packaging>
 
-    <name>features-feature</name>
-    <description>feature details</description>
+    <name>Rezolva TVA :: Karaf feature</name>
 
     <dependencies>
         <!-- add the artifact that should be in the feature in the dependencies set -->
@@ -27,9 +27,8 @@
                 <artifactId>karaf-maven-plugin</artifactId>
                 <configuration>
                     <featuresFile>${project.build.directory}/feature/features.xml</featuresFile>
-                    <startLevel>50</startLevel>
+                    <startLevel>80</startLevel>
                     <aggregateFeatures>false</aggregateFeatures>
-                    <resolver>(obr)</resolver>
                     <checkDependencyChange>true</checkDependencyChange>
                     <failOnDependencyChange>false</failOnDependencyChange>
                     <logDependencyChanges>true</logDependencyChanges>

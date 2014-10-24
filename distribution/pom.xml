@@ -30,9 +30,9 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>ro.ieugen.tva</groupId>
-            <artifactId>features</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>ro.ieugen.tva.karaf</groupId>
+            <artifactId>rezolva-tva</artifactId>
+            <version>${project.version}</version>
             <classifier>features</classifier>
             <type>xml</type>
             <scope>runtime</scope>
@@ -45,8 +45,9 @@
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <includes>
-                    <include>**/*</include>
+                    <include>**/**</include>
                 </includes>
+                <targetPath>${project.build.directory}/assembly</targetPath>
             </resource>
             <resource>
                 <directory>src/main/filtered-resources</directory>
@@ -67,6 +68,9 @@
                         <goals>
                             <goal>resources</goal>
                         </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -77,14 +81,24 @@
                     <archiveZip>false</archiveZip>
                     <archiveTarGz>false</archiveTarGz>
                     <bootFeatures>
-                        <feature>system</feature>
-                        <feature>management</feature>
-                        <feature>shell</feature>
-                        <feature>service</feature>
+                        <feature>shell-compat</feature>
                         <feature>bundle</feature>
-                        <feature>log</feature>
+                        <feature>config</feature>
+                        <!--<feature>instance</feature>-->
+                        <!--<feature>ssh</feature>-->
+                        <feature>system</feature>
+                        <!--<feature>kar</feature>-->
+                        <feature>deployer</feature>
+                        <feature>package</feature>
+                        <feature>management</feature>
+                        <feature>jaas</feature>
+                        <feature>service</feature>
+                        <!--<feature>aries-blueprint</feature>-->
                         <feature>wrap</feature>
-                        <feature>jax-rs-sample</feature>
+                        <feature>log</feature>
+                        <feature>diagnostic</feature>
+
+                        <feature>rezolva-tva</feature>
                     </bootFeatures>
                 </configuration>
             </plugin>

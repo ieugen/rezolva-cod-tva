@@ -13,7 +13,7 @@
     <artifactId>web-app</artifactId>
     <packaging>bundle</packaging>
 
-    <name>web-app Bundle</name>
+    <name>Rezolva TVA :: web-app</name>
 
     <description>
         web-app OSGi bundle project.

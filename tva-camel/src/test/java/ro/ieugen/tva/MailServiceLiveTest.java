@@ -1,8 +1,8 @@
-package ro.ieugen.tva.web.services;
+package ro.ieugen.tva;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import ro.ieugen.tva.web.model.CompanyRecord;
+import ro.ieugen.tva.api.model.CompanyRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +14,8 @@ public class MailServiceLiveTest {
 
     private MailService sender = new MailService(createFaceEnv());
 
-    public static Map<String, String> createFaceEnv() {
-        Map<String, String> config = new HashMap<>();
+    public static Map<String, Object> createFaceEnv() {
+        Map<String, Object> config = new HashMap<>();
         config.put(MailService.TVA_SMTP_HOST, "smtp.zoho.com");
         config.put(MailService.TVA_SMTP_USERNAME, "heroku.bot@ieugen.ro");
         config.put(MailService.TVA_SMTP_PASS, " replace with valid password");
