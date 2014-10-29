@@ -11,14 +11,13 @@
 
     <modules>
         <module>master</module>
+        <module>api</module>
         <module>eu-vat</module>
         <module>tva-camel</module>
-        <!--<module>tva-batch</module>-->
         <module>web-service</module>
         <module>web-app</module>
         <module>features</module>
         <module>distribution</module>
-        <module>api</module>
     </modules>
 
 </project>
