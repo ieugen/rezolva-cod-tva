@@ -111,6 +111,8 @@
         <bundle>mvn:ro.ieugen.tva/web-service/${project.version}</bundle>
         <bundle>mvn:ro.ieugen.tva/web-app/${project.version}</bundle>
 
+        <bundle>mvn:ro.ieugen.tva.karaf/commands/${project.version}</bundle>
+
         <bundle dependency="true">mvn:org.apache.camel/camel-core-osgi/${camel.version}</bundle>
 
         <bundle dependency="true">mvn:javax.mail/javax.mail-api/${javax.mail.version}</bundle>

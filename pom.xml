@@ -15,6 +15,7 @@
         <module>eu-vat</module>
         <module>tva-camel</module>
         <module>web-service</module>
+        <module>commands</module>
         <module>web-app</module>
         <module>features</module>
         <module>distribution</module>

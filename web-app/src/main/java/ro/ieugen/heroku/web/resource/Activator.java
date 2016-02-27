@@ -26,8 +26,8 @@ import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
 
-    private ServiceRegistration<ResourceMapping> resource;
-    private ServiceRegistration<WelcomeFileMapping> welcomeFile;
+    private volatile ServiceRegistration<ResourceMapping> resource;
+    private volatile ServiceRegistration<WelcomeFileMapping> welcomeFile;
 
     public void start(BundleContext context) {
         DefaultResourceMapping resourceMapping = new DefaultResourceMapping();

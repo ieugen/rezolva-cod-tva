@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import ro.ieugen.tva.api.VatCodeService;
+import ro.ieugen.tva.api.model.VatRequest;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,14 +31,13 @@ public class TvaFormResource {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("resolve")
-    public Response processVatCodeRequest(@FormParam("email") String email,
-                                          @FormParam("companyList") String companyList) throws IOException {
+    public Response processVatCodeRequest(VatRequest vatRequest) throws IOException {
 
-        log.info("Request for email {} received and awaits processing.", email);
-        vatCodeService.resolveVatCodes(companyList, email);
+        log.info("Request for email {} received and awaits processing.", vatRequest.getCompanyList());
+        vatCodeService.resolveVatCodes(vatRequest.getCompanyList(), vatRequest.getEmail());
 
         return Response.ok("{ \"message\": \"Request sent to process. You should receive a message later today.\" }").build();
     }
